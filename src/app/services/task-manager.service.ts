@@ -2,6 +2,7 @@ import { computed, effect, Injectable, signal } from '@angular/core';
 import { Task, TaskBoard, TaskColumnLocation } from '../interfaces/Task';
 import { TaskStatus } from '../types/Task';
 import { generateId } from '../utils/generate-id';
+import { TASK_STATUS_LIST } from '../constants/taskStatusList';
 
 const STORAGE_KEY = 'gotask-board';
 
@@ -16,7 +17,7 @@ function loadBoard(): TaskBoard {
   try {
     const parsed = JSON.parse(raw) as TaskBoard;
 
-    for (const status of ['todo', 'inProgress', 'done'] as TaskStatus[]) {
+    for (const status of TASK_STATUS_LIST) {
       for (const task of parsed[status]) {
         task.comments = task.comments.map((c) => ({
           ...c,
