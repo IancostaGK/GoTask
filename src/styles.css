@@ -4,11 +4,11 @@
   --color-*: initial;
 
   /* Text */
-  --color-text-heading: #080B12;
-  --color-text-paragraph: #374151;
-  --color-text-span: #9CA3AF;
-  --color-text-placeholder: #89919F;
-  --color-text-invert: #FFFFFF;
+  --color-heading: #080B12;
+  --color-paragraph: #374151;
+  --color-span: #9CA3AF;
+  --color-placeholder: #89919F;
+  --color-invert: #FFFFFF;
 
   /* Background */
   --color-background-light: #FFFFFF;
