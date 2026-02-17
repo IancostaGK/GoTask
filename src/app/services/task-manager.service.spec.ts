@@ -5,8 +5,13 @@ describe('TaskManagerService', () => {
   let service: TaskManagerService;
 
   beforeEach(() => {
+    localStorage.clear();
     TestBed.configureTestingModule({});
     service = TestBed.inject(TaskManagerService);
+  });
+
+  afterEach(() => {
+    localStorage.clear();
   });
 
   it('should be created', () => {
@@ -31,6 +36,56 @@ describe('TaskManagerService', () => {
     expect(board2.todo.length).toBe(2);
     expect(board1).not.toBe(board2);
     expect(board1.todo[0]).not.toBe(board2.todo[0]);
+  });
+
+  describe('localStorage persistence', () => {
+    it('should save board to localStorage on changes', () => {
+      service.createTask('todo', 'Persisted Task', 'Desc');
+      TestBed.flushEffects();
+
+      const stored = localStorage.getItem('gotask-board');
+      expect(stored).toBeTruthy();
+
+      const parsed = JSON.parse(stored!);
+      expect(parsed.todo.length).toBe(1);
+      expect(parsed.todo[0].title).toBe('Persisted Task');
+    });
+
+    it('should restore board from localStorage on init', () => {
+      const board = {
+        todo: [{
+          id: 'test-id',
+          title: 'Restored Task',
+          description: 'Desc',
+          comments: [{ id: 'c1', comment: 'Hello', createdDate: '2026-01-01T00:00:00.000Z' }],
+        }],
+        inProgress: [],
+        done: [],
+      };
+      localStorage.setItem('gotask-board', JSON.stringify(board));
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({});
+      const freshService = TestBed.inject(TaskManagerService);
+
+      const tasks = freshService.tasks();
+      expect(tasks.todo.length).toBe(1);
+      expect(tasks.todo[0].title).toBe('Restored Task');
+      expect(tasks.todo[0].comments[0].createdDate).toBeInstanceOf(Date);
+    });
+
+    it('should handle corrupted localStorage gracefully', () => {
+      localStorage.setItem('gotask-board', 'invalid-json');
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({});
+      const freshService = TestBed.inject(TaskManagerService);
+
+      const tasks = freshService.tasks();
+      expect(tasks.todo).toEqual([]);
+      expect(tasks.inProgress).toEqual([]);
+      expect(tasks.done).toEqual([]);
+    });
   });
 
   describe('createTask', () => {
