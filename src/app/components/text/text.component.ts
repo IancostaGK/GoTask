@@ -18,10 +18,9 @@ const variantClasses: Record<TextVariant, string> = {
   host: {
     '[class]': 'classes()',
   },
-  template: `<p>{{ text() }}</p>`,
+  template: `<ng-content />`,
 })
 export class TextComponent {
-  text = input.required<string>();
   variant = input.required<TextVariant>();
 
   classes = computed(() => variantClasses[this.variant()]);
