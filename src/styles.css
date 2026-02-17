@@ -3,6 +3,10 @@
 @theme {
   --color-*: initial;
 
+  /* Base */
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+
   /* Text */
   --color-heading: #080B12;
   --color-paragraph: #374151;
