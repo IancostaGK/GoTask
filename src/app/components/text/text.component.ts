@@ -18,7 +18,7 @@ const variantClasses: Record<TextVariant, string> = {
   host: {
     '[class]': 'classes()',
   },
-  template: `{{ text() }}`,
+  template: `<p>{{ text() }}</p>`,
 })
 export class TextComponent {
   text = input.required<string>();
