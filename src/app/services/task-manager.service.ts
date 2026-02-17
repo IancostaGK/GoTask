@@ -1,5 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { Task, TaskBoard, TaskStatus } from '../types/Task';
+import { Task, TaskBoard, TaskColumnLocation } from '../interfaces/Task';
+import { TaskStatus } from '../types/Task';
 import { generateId } from '../utils/generate-id';
 
 function createEmptyBoard(): TaskBoard {
@@ -99,7 +100,7 @@ export class TaskManagerService {
     });
   }
 
-  private findTaskColumn(taskId: string): { status: TaskStatus; index: number } | null {
+  private findTaskColumn(taskId: string): TaskColumnLocation | null {
     const board = this.board();
     const statuses: TaskStatus[] = ['todo', 'inProgress', 'done'];
 
